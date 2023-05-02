@@ -108,8 +108,7 @@ render={({ field: { onChange, value} }) => (
    fixLength={true}
    format={"+100 #,##-(###)/##,##"}
    fullIsoCode={true}
-   searchOption={true} 
-   getCountryCode={(number)=> {setNumber(number)}}
+   searchOption={true}
    onchange={(n)=> setPhone(n)} 
  />
  ```
