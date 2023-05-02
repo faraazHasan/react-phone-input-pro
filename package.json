@@ -57,5 +57,6 @@
   "bugs": {
     "url": "https://github.com/faraazHasan/react-phone-input-pro/issues"
   },
-  "homepage": "https://github.com/faraazHasan/react-phone-input-pro#readme"
+  "homepage": "https://github.com/faraazHasan/react-phone-input-pro#readme",
+  "files": ["lib/**/*"]
 }
