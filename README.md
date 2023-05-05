@@ -38,7 +38,7 @@ npm add react-phone-input-pro
 ## Usage
 
 ```typescript
-import { NumberFormatter } from 'react-number-formatter';
+import PhoneInput from 'react-phone-input-pro';
 ```
 
 ```javascript
@@ -55,7 +55,7 @@ const [number, setNumber] = useState<string | number>();
 
 #
 ```typescript
-<NumberFormatter 
+<PhoneInput 
   value={number}
   fullIsoCode={true} 
   {...register('number', { required: true }) }
@@ -84,7 +84,7 @@ render={({ field: { onChange, value} }) => (
 
 #
 ```typescript
-<NumberFormatter
+<PhoneInput
   initialFormat={true} 
   value={number}
   prefix={true}

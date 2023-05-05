@@ -53,3 +53,11 @@ export interface ISeperators {
   index: number
   symbol: string
 }
+
+export declare const ReactPhoneInputPro: React.FC<NumberFormatterProps>
+
+type ReactPhoneInputComponentType = (props: NumberFormatterProps) => React.ReactElement
+
+declare const PhoneInput: ReactPhoneInputComponentType
+
+export default PhoneInput

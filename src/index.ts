@@ -1,1 +1,5 @@
-export { PhoneInput } from './components/PhoneInput'
+import { PhoneInput } from './components/PhoneInput'
+
+export const ReactPhoneInputPro = PhoneInput
+
+export default PhoneInput
