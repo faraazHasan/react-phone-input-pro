@@ -34,6 +34,7 @@ npm add react-phone-input-pro
 | searchOption: Boolean | To add or remove search bar|
 | getCountryCode: Function() | To get selected country code |
 | flags: Boolean | To get country code instead of flag |
+| error: [errorStatus:boolean, errorMessage:string] | To show error message |
 
 ## Usage
 
@@ -43,10 +44,12 @@ import PhoneInput from 'react-phone-input-pro';
 
 ```javascript
 const [number, setNumber] = useState();
+const [err, setErr] = useState(false);
 ```
 ```typescript
 //for typescript
 const [number, setNumber] = useState<string | number>();
+ const [err, setErr] = useState(false);
 ```
 
 ## Example: Inside React-hook-form
@@ -114,3 +117,21 @@ render={({ field: { onChange, value} }) => (
  ```
 ![format](https://user-images.githubusercontent.com/83122437/235751030-968fcad7-0501-412e-b483-4640e29ae4f6.gif)
 
+
+## Error handling
+```typescript
+<PhoneInput
+  value={number}
+  initialFormat={true}
+  prefix={false}
+  placeholder={"Phone number..."}
+  error={[err, "Invalid Number"]}
+  fullIsoCode={true} 
+  searchOption={true}
+  onchange={(value: string)=> {
+    setNumber(value)
+    setErr(false);
+  }}
+/> 
+```
+![Screen Recording 2023-05-06 at 8 35 22 PM](https://user-images.githubusercontent.com/83122437/236632539-43dfe372-557e-4f20-88c6-1f3a87a157dd.gif)
