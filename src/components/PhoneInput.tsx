@@ -6,7 +6,7 @@ import { ICountryList, IFormat, NumberFormatterProps } from '../types'
 import '../styles/index.css'
 import { CountrySelector } from './CountrySelector'
 import { onInputFocus } from '../utils/stylingMethods'
-import { FORM_CLASS, PHONE_INPUT_CLASS } from '../utils/cssClassNames'
+import { FORM_CLASS, PHONE_INPUT_CLASS, BORDER_RED } from '../utils/cssClassNames'
 
 export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatterProps) => {
   const [newCountries] = useState<ICountryList[]>([...c].sort(compare))
@@ -45,7 +45,14 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
       getRawNumber(inputElm.current.value)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [format, props])
+  }, [format])
+  useEffect(() => {
+    if (props.error && props.error.length && props.error[0] && parent.current) {
+      parent.current.classList.add(BORDER_RED)
+    } else {
+      parent.current && parent.current.classList.remove(BORDER_RED)
+    }
+  })
   const ondown = async (key: string, e: React.KeyboardEvent<HTMLInputElement>) => {
     const { seperators, prefixIndexes, prefix, justSymbols } = getSeperatorsPositions(format.format)
     const validKeys = /([0-9]|Backspace|ArrowLeft|ArrowRight|Control|v|c|x)/g
@@ -373,43 +380,50 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
     : { borderRadius: '0px 4px 4px 0px' }
 
   return (
-    <div className={FORM_CLASS} ref={(ref: HTMLDivElement) => (parent.current = ref)}>
-      <label>
-        {!props.format && (
-          <CountrySelector
-            disabled={props.disabled}
-            fullIsoCode={props.fullIsoCode}
-            searchOption={props.searchOption}
-            defaultCountry={defaultCountry}
-            onlyCountries={props.onlyCountries}
-            setCountryCode={(code: string) => setCountryCode(code)}
-            setFormat={(value: IFormat) => setFormat(value)}
-            flags={props.flags}
-            input={parent.current}
-            mainInput={inputElm.current}
-            drpButton={(btn: any) => (drpButton.current = btn)}
-            list={(l: HTMLDivElement) => (list.current = l)}
-          />
-        )}
-      </label>
-      <input
-        ref={(ref: HTMLInputElement) => (inputElm.current = ref)}
-        disabled={props.disabled}
-        type='tel'
-        autoComplete='off'
-        className={PHONE_INPUT_CLASS}
-        placeholder={format.placeholder}
-        style={inputStyle}
-        value={inputValue(props.value as string)}
-        onKeyDown={(e) => ondown(e.key, e)}
-        onPaste={(e) => onpaste(e)}
-        onChange={(e) => updateNumber(e.currentTarget)}
-        onCut={(e) => oncut(e)}
-        onClick={(e) => onclick(e)}
-        name={props.name}
-        onBlur={props.onBlur}
-        {...props.register}
-      />
-    </div>
+    <>
+      <div className={FORM_CLASS} ref={(ref: HTMLDivElement) => (parent.current = ref)}>
+        <label>
+          {!props.format && (
+            <CountrySelector
+              disabled={props.disabled}
+              fullIsoCode={props.fullIsoCode}
+              searchOption={props.searchOption}
+              defaultCountry={defaultCountry}
+              onlyCountries={props.onlyCountries}
+              setCountryCode={(code: string) => setCountryCode(code)}
+              setFormat={(value: IFormat) => setFormat(value)}
+              flags={props.flags}
+              input={parent.current}
+              mainInput={inputElm.current}
+              drpButton={(btn: any) => (drpButton.current = btn)}
+              list={(l: HTMLDivElement) => (list.current = l)}
+            />
+          )}
+        </label>
+        <input
+          ref={(ref: HTMLInputElement) => (inputElm.current = ref)}
+          disabled={props.disabled}
+          type='tel'
+          autoComplete='off'
+          className={PHONE_INPUT_CLASS}
+          placeholder={format.placeholder}
+          style={inputStyle}
+          value={inputValue(props.value as string)}
+          onKeyDown={(e) => ondown(e.key, e)}
+          onPaste={(e) => onpaste(e)}
+          onChange={(e) => updateNumber(e.currentTarget)}
+          onCut={(e) => oncut(e)}
+          onClick={(e) => onclick(e)}
+          name={props.name}
+          onBlur={props.onBlur}
+          {...props.register}
+        />
+      </div>
+      {props.error && (
+        <div style={{ textAlign: 'left', color: 'red', fontSize: 'small', marginTop: '5px' }}>
+          <p>{props.error.length > 1 && props.error[0] && props.error[1]}</p>
+        </div>
+      )}
+    </>
   )
 }

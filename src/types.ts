@@ -18,6 +18,7 @@ export interface NumberFormatterProps {
   onBlur?: any
   className?: string
   flags?: boolean
+  error?: [boolean, string]
 }
 export interface ICountryList {
   n: string

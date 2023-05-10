@@ -3,14 +3,13 @@ import { ICountryList, ISelector } from '../types'
 import { c } from '../data/countries'
 import React from 'react'
 import { onClickOutside } from '../utils/stylingMethods'
+import Arrow from './Arrow'
 import {
   DROPDOWN_PARENT_CLASS,
   DROPDOWN_BUTTON_CLASS,
   DROPDOWN_BUTTON_FOCUS_CLASS,
   DROPDOWN_BUTTON_TEXT_CLASS,
   DROPDOWN_ARROW_PARENT_CLASS,
-  ARROW_TOP_CLASS,
-  ARROW_DOWN_CLASS,
   SELECTED_FLAG_CLASS,
   FLAG_CLASS,
   LIST_CLASS,
@@ -40,7 +39,6 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
   const selectorInput = useRef<HTMLInputElement>()
   const [search, setSearch] = useState('')
   const noOptions = useRef(false)
-
   useEffect(() => {
     if (selector.current && props.input && drpBtn.current) {
       onClickOutside(selector.current, props.input, drpBtn.current)
@@ -141,8 +139,7 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
             ''
           ) : (
             <div className={DROPDOWN_ARROW_PARENT_CLASS}>
-              <span className={ARROW_TOP_CLASS}> &#8963;</span>
-              <span className={ARROW_DOWN_CLASS}>&#8963;</span>
+              <Arrow color={'rgb(108, 108, 108)'} />
             </div>
           )}
         </div>

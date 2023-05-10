@@ -1,6 +1,6 @@
 {
   "name": "react-phone-input-pro",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Phone number input component for react to formats phone numbers in real time.",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -29,6 +29,8 @@
     "react-component",
     "phone-input",
     "react-phone",
+    "react-phone-input-pro",
+    "phone-number-input",
     "react-international-phone"
   ],
   "author": "faraz khan",
