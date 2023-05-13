@@ -1,5 +1,5 @@
 # react-phone-input-pro
-Phone number input component for react to format phone numbers in real time.
+Phone number input component for react to format phone numbers according to selected country in real time.
 
 
 ## Features

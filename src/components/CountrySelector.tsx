@@ -26,28 +26,50 @@ import {
 
 export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
   const selector = useRef<HTMLDivElement>()
-  const [selectedOption, setSelectedOption] = useState<string>(
-    props.flags === undefined || props.flags
-      ? props.defaultCountry.fg
-      : props.fullIsoCode
-      ? props.defaultCountry.c
-      : props.defaultCountry.c_sm,
-  )
+  const [imgErr, setImgErr] = useState(true)
+  const [selectedOption, setSelectedOption] = useState<string>()
   const activeOption = useRef<number | undefined>()
   const shouldShowDrpDwn = useRef<boolean>(true)
   const drpBtn = useRef<HTMLButtonElement>()
   const selectorInput = useRef<HTMLInputElement>()
   const [search, setSearch] = useState('')
   const noOptions = useRef(false)
+  const [clickedOutside, setClickedOutside] = useState(true)
+  const [isButtonActive, setIsButtonActive] = useState(false)
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => {
+      setSelectedOption(
+        props.flags === undefined || props.flags
+          ? props.defaultCountry.fg
+          : props.fullIsoCode
+          ? props.defaultCountry.c
+          : props.defaultCountry.c_sm,
+      )
+      setImgErr(false)
+    }
+    img.onerror = () => {
+      setSelectedOption(props.fullIsoCode ? props.defaultCountry.c : props.defaultCountry.c_sm)
+      setImgErr(true)
+    }
+    img.src = c[0].fg
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   useEffect(() => {
     if (selector.current && props.input && drpBtn.current) {
-      onClickOutside(selector.current, props.input, drpBtn.current)
+      onClickOutside(selector.current, props.input, drpBtn.current, () => {
+        setClickedOutside(true)
+        setIsButtonActive(false)
+      })
+
       props.drpButton(drpBtn.current)
       props.list(selector.current)
     }
   }, [props])
 
   const getSelector = () => {
+    setClickedOutside(false)
+    setIsButtonActive(true)
     if (drpBtn.current) {
       const offset = drpBtn.current.getBoundingClientRect()
       if (offset.bottom > 500) {
@@ -68,9 +90,14 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
     : {}
 
   const selectOption = (country: ICountryList, index: number) => {
+    setClickedOutside(true)
     changeCountry(country['f'], country['d'], country['p'])
     setSelectedOption(
-      props.flags === undefined || props.flags ? country['fg'] : props.fullIsoCode ? country['c'] : country['c_sm'],
+      (props.flags === undefined || props.flags) && !imgErr
+        ? country['fg']
+        : props.fullIsoCode
+        ? country['c']
+        : country['c_sm'],
     )
     activeOption.current = index
     selector.current && shouldShowDrpDwn.current && selector.current.classList.remove(SHOW_CLASS)
@@ -123,13 +150,15 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
         className={DROPDOWN_BUTTON_CLASS}
         ref={(ref: HTMLButtonElement) => (drpBtn.current = ref)}
         style={countrySelectorStyle}
+        onMouseOver={() => setClickedOutside(false)}
+        onMouseOut={() => !isButtonActive && setClickedOutside(true)}
         onClick={getSelector}
       >
         <div className={DROPDOWN_BUTTON_TEXT_CLASS}>
-          {props.flags === undefined || props.flags ? (
+          {(props.flags === undefined || props.flags) && !imgErr ? (
             <img src={selectedOption} className={SELECTED_FLAG_CLASS} alt={selectedOption} />
           ) : (
-            <p>{selectedOption}</p>
+            <span>{selectedOption}</span>
           )}
           {(props.onlyCountries &&
             props.onlyCountries.length < 2 &&
@@ -139,7 +168,7 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
             ''
           ) : (
             <div className={DROPDOWN_ARROW_PARENT_CLASS}>
-              <Arrow color={'rgb(108, 108, 108)'} />
+              <Arrow color={clickedOutside ? 'rgb(108, 108, 108)' : 'rgb(0, 145, 255)'} />
             </div>
           )}
         </div>
@@ -175,7 +204,7 @@ export const CountrySelector: React.FC<ISelector> = (props: ISelector) => {
                   }}
                   className={LIST_ITEM_BUTTON_CLASS}
                 >
-                  {props.flags === undefined || props.flags ? (
+                  {(props.flags === undefined || props.flags) && !imgErr ? (
                     <img src={country['fg']} alt='' className={FLAG_CLASS} />
                   ) : (
                     ''

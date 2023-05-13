@@ -15,7 +15,7 @@ const Arrow: React.FC<IArrow> = (props: IArrow) => {
         xmlnsXlink='http://www.w3.org/1999/xlink'
         x='0px'
         y='0px'
-        width='9px'
+        width='8px'
         viewBox='0 0 1486 2032'
         enableBackground='new 0 0 1486 2032'
         xmlSpace='preserve'

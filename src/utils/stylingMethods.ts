@@ -9,7 +9,12 @@ import {
   SHOW_CLASS,
 } from './cssClassNames'
 
-export const onClickOutside = (selector: HTMLDivElement, input: HTMLInputElement, drpButton: HTMLButtonElement) => {
+export const onClickOutside = (
+  selector: HTMLDivElement,
+  input: HTMLInputElement,
+  drpButton: HTMLButtonElement,
+  callBack: () => void,
+) => {
   window.onclick = function (event: MouseEvent | TouchEvent) {
     if (
       event.target &&
@@ -26,6 +31,7 @@ export const onClickOutside = (selector: HTMLDivElement, input: HTMLInputElement
       selector.classList.remove(SHOW_CLASS)
       input.classList.remove(FORM_FOCUS_CLASS)
       drpButton.classList.remove(DROPDOWN_BUTTON_FOCUS_CLASS)
+      callBack()
     }
   }
   window.ontouchstart = function (event: TouchEvent) {
@@ -59,7 +65,6 @@ export const onInputFocus = (
 ) => {
   inputElm.addEventListener('focus', () => {
     parent.classList.add(FORM_FOCUS_CLASS)
-    drpButton && drpButton.classList.add(DROPDOWN_BUTTON_FOCUS_CLASS)
     list && list.classList.remove(SHOW_CLASS)
   })
 

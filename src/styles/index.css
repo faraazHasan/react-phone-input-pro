@@ -29,7 +29,7 @@
     border: none;
     outline: none;
     font-size: inherit;
-    padding: 0 0.3rem;
+    padding: 0 0.4rem;
     color: rgb(52, 52, 52);
     margin-left: -1px;
     background: none;
@@ -56,6 +56,12 @@
     background: none;
     border: none;
     color: rgb(0, 145, 255);
+  }
+  .zoom {
+    transition: transform .2s;
+  }
+  .react-number-formatter-dropbtn:hover img{
+    transform: scale(.95);
   }
   .react-number-formatter-dropbtn:focus{
     color: rgb(0, 145, 255);
