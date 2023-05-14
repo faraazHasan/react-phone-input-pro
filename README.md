@@ -36,6 +36,9 @@ npm add react-phone-input-pro
 | flags: Boolean | To get country code instead of flag |
 | error: [errorStatus:boolean, errorMessage:string] | To show error message |
 
+<img width="785" alt="Screenshot 2023-05-14 at 1 37 55 PM" src="https://github.com/faraazHasan/react-phone-input-pro/assets/83122437/c86841f1-4fcf-49a4-bf90-a91d09a93cea">
+
+
 ## Usage
 
 ```typescript
