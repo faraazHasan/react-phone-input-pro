@@ -118,7 +118,8 @@ render={({ field: { onChange, value} }) => (
    onchange={(n)=> setPhone(n)} 
  />
  ```
-![format](https://user-images.githubusercontent.com/83122437/235751030-968fcad7-0501-412e-b483-4640e29ae4f6.gif)
+
+![Screen Recording 2023-05-27 at 9 14 55 PM](https://github.com/faraazHasan/react-phone-input-pro/assets/83122437/6c12fd9a-c621-43ec-8fc0-331f0ef2d6f7)
 
 
 ## Error handling
@@ -138,3 +139,6 @@ render={({ field: { onChange, value} }) => (
 /> 
 ```
 ![Screen Recording 2023-05-06 at 8 35 22 PM](https://user-images.githubusercontent.com/83122437/236632539-43dfe372-557e-4f20-88c6-1f3a87a157dd.gif)
+
+####
+Based on [react-number-formatter](https://www.npmjs.com/package/react-number-formatter)
