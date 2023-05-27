@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { c } from '../data/countries'
 import { getSeperatorsPositions, getDefaultCountry, compare } from '../utils/methods'
 import { ICountryList, IFormat, NumberFormatterProps } from '../types'
-import '../styles/index.css'
+// import '../styles/index.css'
 import { CountrySelector } from './CountrySelector'
 import { onInputFocus } from '../utils/stylingMethods'
 import { FORM_CLASS, PHONE_INPUT_CLASS, BORDER_RED } from '../utils/cssClassNames'
@@ -21,7 +21,14 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
       props.includeDialingCode,
     ),
   )
-  const [countryCode, setCountryCode] = useState<string>(defaultCountry.d)
+  const [countryCode, setCountryCode] = useState<string>(() => {
+    if (props.format !== undefined) {
+      const { prefix } = getSeperatorsPositions(props.format)
+      return prefix
+    } else {
+      return defaultCountry.d
+    }
+  })
   const drpButton = useRef<HTMLButtonElement>()
   const list = useRef<HTMLDivElement>()
   const [format, setFormat] = useState<IFormat>({
@@ -115,7 +122,7 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
             e.currentTarget.selectionStart = prefix.length
           }
           if (e.currentTarget.selectionStart || e.currentTarget.selectionStart === 0) {
-            if (text?.length) {
+            if (e.currentTarget.selectionStart !== e.currentTarget.selectionEnd) {
               e.currentTarget.setRangeText('', e.currentTarget.selectionStart, e.currentTarget.selectionEnd, 'end')
               updateNumber(e.currentTarget)
             } else {
@@ -298,22 +305,18 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
   }
 
   const oncut = async (e: React.ClipboardEvent<HTMLInputElement>) => {
-    const text = window.getSelection()?.toString()
-    navigator.clipboard.writeText(text ? text : '')
-    const { prefix } = getSeperatorsPositions(format.format)
-    if (e.currentTarget.selectionStart && e.currentTarget.selectionStart <= prefix.length) {
-      e.currentTarget.setRangeText(prefix, 0, prefix.length, 'end')
-      e.currentTarget.selectionStart = prefix.length
+    const start = e.currentTarget.selectionStart
+    const end = e.currentTarget.selectionEnd
+    const value = e.currentTarget.value
+    if (start && end) {
+      const copiedText = e.currentTarget.value.slice(start, end)
+      navigator.clipboard.writeText(copiedText)
+      const newValue = value.substring(0, start) + value.substring(end, value.length)
+      e.currentTarget.value = newValue
+      e.currentTarget.selectionStart = start
+      e.currentTarget.selectionEnd = start
     }
-    if (e.currentTarget.selectionStart && text?.length) {
-      e.currentTarget.setRangeText(
-        '',
-        e.currentTarget.selectionStart,
-        e.currentTarget.selectionStart + text.length,
-        'end',
-      )
-      updateNumber(e.currentTarget)
-    }
+    updateNumber(e.currentTarget)
     getRawNumber(e.currentTarget.value)
     e.preventDefault()
   }
@@ -349,8 +352,10 @@ export const PhoneInput: React.FC<NumberFormatterProps> = (props: NumberFormatte
       target.selectionEnd = prefix.length
       target.selectionStart = prefix.length
     } else {
-      target.selectionEnd = getEnd
-      target.selectionStart = getStart
+      if (getEnd && getStart) {
+        target.selectionEnd = getEnd
+        target.selectionStart = getStart
+      }
     }
   }
 
